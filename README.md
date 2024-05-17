@@ -11,8 +11,8 @@ node bot
 
 ## Usage
 
-Deployen en maken van nieuwe commands:
-> NOTE: max 200 Command per dag is het limiet.
+Deploy commands:
+> NOTE: max 200 Command per day is the limit.
 
 ```bash
 npm run deploy
