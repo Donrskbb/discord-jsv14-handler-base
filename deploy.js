@@ -4,39 +4,44 @@ const fs = require('fs');
 require('dotenv').config();
 
 const deploy = async () => {
-	const commandData = [];
+  const commandData = [];
 
-	fs.readdirSync('./commands/').forEach(async category => {
-		const commands = fs.readdirSync(`./commands/${category}/`).filter(cmd => cmd.endsWith('.js'));
+  // Read and load all commands from subdirectories
+  const categories = fs.readdirSync('./commands/');
+  
+  for (const category of categories) {
+    const commands = fs.readdirSync(`./commands/${category}/`).filter(file => file.endsWith('.js'));
 
-		for (const command of commands) {
-			const Command = require(`./commands/${category}/${command}`);
+    for (const file of commands) {
+      const command = require(`./commands/${category}/${file}`);
 
-			const cmd = new Command();
+      // Ensure the command structure is valid
+      if (command && command.data && typeof command.data.toJSON === 'function') {
+        commandData.push(command.data.toJSON());
+      } else {
+        console.error(`Invalid command structure: ${category}/${file}`);
+      }
+    }
+  }
 
-			const cmdData = cmd.data.toJSON();
-			commandData.push(cmdData);
-		}
-	});
+  // Initialize REST client with the latest API version
+  const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-	const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
+  try {
+    const clientId = process.env.CLIENT_ID;
+    const guildId = process.env.DEPLOY_GUILD_ID;
 
-	try {
-		const clientId = process.env.CLIENT_ID;
-		const guildId = process.env.DEPLOY_GUILD_ID;
+    console.log('Started refreshing Slash Commands and Context Menus...');
 
-		console.log('Started refreshing Slash Commands and Context Menus...');
+    await rest.put(
+      Routes.applicationGuildCommands(clientId, guildId),
+      { body: commandData }
+    );
 
-		await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commandData },
-		).then(() => {
-			console.log('Slash Commands and Context Menus have now been deployed.');
-		});
-	}
-	catch (e) {
-		console.error(e);
-	}
+    console.log('Slash Commands and Context Menus have now been deployed.');
+  } catch (error) {
+    console.error('Error deploying commands:', error);
+  }
 };
 
 deploy();

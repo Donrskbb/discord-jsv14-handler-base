@@ -1,5 +1,4 @@
-const Event = require('../../structures/EventClass');
-
+const Event = require('../../structures/EventClass'); // Adjust the path as needed
 const { ActivityType } = require('discord.js');
 
 module.exports = class ReadyEvent extends Event {
@@ -9,11 +8,33 @@ module.exports = class ReadyEvent extends Event {
 			once: true,
 		});
 	}
+
 	async run() {
-		const client = this.client;
+		const { client } = this;
 
-		client.user.setActivity('👋 Hello World!', { type: ActivityType.Playing });
+		// Array of statuses to cycle through
+		const statuses = [
+			{ name: '👋 Hello World!', type: ActivityType.Playing },
+			{ name: '📢 Use /help for commands', type: ActivityType.Listening },
+			{ name: `🚀 Serving ${client.guilds.cache.size} servers`, type: ActivityType.Watching },
+			{ name: '🎮 Playing with Discord.js', type: ActivityType.Playing },
+		];
 
-		console.log(`Discord Bot is now online with ${client.users.cache.size} users and ${client.guilds.cache.size} servers.`);
+		// Function to set a random status from the statuses array
+		const updateStatus = () => {
+			const status = statuses[Math.floor(Math.random() * statuses.length)];
+			client.user.setActivity(status.name, { type: status.type });
+		};
+
+		// Set an initial status
+		updateStatus();
+
+		// Update status every 10 minutes (600000 milliseconds)
+		setInterval(updateStatus, 6000);
+
+		// Log bot's online status and additional information
+		console.log(`online`);
+		console.log(`Logged in as: ${client.user.tag} (ID: ${client.user.id})`);
+		console.log(`Discord Bot is now online with ${client.guilds.cache.size} servers and ${client.users.cache.size} users.`);
 	}
 };
