@@ -1,38 +1,39 @@
 {
     "name": "discord-jsv14-handler-base",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A Discord.js Command Class Handler",
     "main": "bot.js",
     "scripts": {
-        "start": "node bot",
-        "deploy": "node deploy"
+      "start": "node bot.js",
+      "deploy": "node deploy.js"
     },
     "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Donrskbb/discord-jsv14-handler-base.git"
+      "type": "git",
+      "url": "https://github.com/Donrskbb/discord-jsv14-handler-base.git"
     },
     "keywords": [
-        "discord-bot",
-        "discord-js",
-        "context-menus",
-        "discord-slash-commands",
-        "discord-context-menus",
-        "slash-commands",
-        "bot",
-        "discord",
-        "javascript",
-        "nodejs"
+      "discord-bot",
+      "discord-js",
+      "context-menus",
+      "discord-slash-commands",
+      "discord-context-menus",
+      "slash-commands",
+      "bot",
+      "discord",
+      "javascript",
+      "nodejs"
     ],
     "author": "Donrskbb",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/Donrskbb/discord-jsv14-handler-base/issues"
+      "url": "https://github.com/Donrskbb/discord-jsv14-handler-base/issues"
     },
     "homepage": "https://github.com/Donrskbb/discord-jsv14-handler-base#readme",
     "dependencies": {
-        "@discordjs/rest": "^2.0.1",
-        "common-tags": "^1.8.2",
-        "discord.js": "^14.13.0",
-        "dotenv": "^16.3.1"
+      "@discordjs/rest": "^2.1.0",
+      "common-tags": "^1.8.2",
+      "discord.js": "^14.14.0",
+      "dotenv": "^16.3.1"
     }
-}
+  }
+  
